@@ -5,7 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 //styles//
 const useStyles = makeStyles({
   modalContent: {
-    color: "white",
     fontSize: "35px",
     fontWeight: 300,
     margin: "5px 0 10px",
@@ -18,17 +17,23 @@ const useStyles = makeStyles({
     width: "300px",
     height: "300px",
     fontSize: "26px",
+    overflow: "auto",
+  },
+  styledBlue: {
+    color: "blue",
   },
 });
 
 export interface BaseModalWrapperProps {
   isModalVisible: boolean;
   onBackdropClick: () => void;
+  launch: any;
 }
 
 const BaseModalWrapper: React.FC<BaseModalWrapperProps> = ({
   onBackdropClick,
   isModalVisible,
+  launch,
 }) => {
   const classes = useStyles();
 
@@ -39,7 +44,17 @@ const BaseModalWrapper: React.FC<BaseModalWrapperProps> = ({
   return (
     <Modal onBackdropClick={onBackdropClick}>
       <div className={classes.modalContainer}>
-        <div className={classes.modalContent}>Test modal display</div>
+        <h2 className={classes.modalContent}>
+          <span className={classes.styledBlue}>Nom:</span> {launch.name}
+        </h2>
+        <p>
+          <span className={classes.styledBlue}>Date de lancement:</span>{" "}
+          {launch.date_utc}
+        </p>
+        <p>
+          <span className={classes.styledBlue}>Détails:</span>{" "}
+          {launch.details ? launch.details : "Aucun détail !"}
+        </p>
       </div>
     </Modal>
   );

@@ -33,7 +33,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     card: {
       width: 300,
-      margin: "20px 0",
+      maxHeight: 380,
+      margin: "30px",
+      overflow: "auto",
     },
     root: {
       width: 300,
@@ -97,6 +99,15 @@ const DetailsCard = (prop: any) => {
               <div className={classes.fonts}>
                 Nom :{" "}
                 <span className={classes.fontsDatas}> {prop.Launche.name}</span>
+              </div>
+            </Typography>
+            <Typography gutterBottom variant="h5" component="h2">
+              <div className={classes.fonts}>
+                Détails :{" "}
+                <span className={classes.fontsDatas}>
+                  {" "}
+                  {prop.Launche.details}
+                </span>
               </div>
             </Typography>
             <Typography gutterBottom variant="h5" component="h2">

@@ -125,7 +125,7 @@ class HomePage extends Component<MyProps, MyState> {
 
   render() {
     const { classes } = this.props;
-    console.log(typeof this.state.futurLaunches);
+    console.log(this.state.futurLaunches);
     return (
       <div className={classes.wrapper}>
         <div className={classes.header}>
@@ -202,11 +202,7 @@ class HomePage extends Component<MyProps, MyState> {
                     </CardContent>
                   </CardActionArea>
                   <CardActions>
-                    <Button size="small" color="primary">
-                      <>
-                        <ModalView />
-                      </>
-                    </Button>
+                    <ModalView launch={futurLaunche} />
                   </CardActions>
                 </Card>
               </li>

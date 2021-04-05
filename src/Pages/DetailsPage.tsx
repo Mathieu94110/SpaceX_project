@@ -6,6 +6,7 @@ import {
   withStyles,
   WithStyles,
 } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
 
 import DetailsCard from "../Components/DetailsPageModal/DetailsCard";
 
@@ -28,7 +29,6 @@ const styles = (theme: Theme) =>
         display: "none",
       },
     },
-
     paper: {
       width: 400,
       backgroundColor: theme.palette.background.paper,
@@ -57,7 +57,9 @@ interface MyProps extends WithStyles<typeof styles> {
   test: () => any;
 }
 interface MyState {
-  allLaunches: [];
+  allLaunches: any[];
+  listLaunches: any[];
+  search: string;
 }
 
 class DetailsPage extends Component<MyProps, MyState> {
@@ -65,7 +67,9 @@ class DetailsPage extends Component<MyProps, MyState> {
   constructor(props: MyProps) {
     super(props);
     this.state = {
+      listLaunches: [],
       allLaunches: [],
+      search: "",
     };
   }
 
@@ -80,6 +84,7 @@ class DetailsPage extends Component<MyProps, MyState> {
         console.log("Reponse data ", json);
         this.setState({
           allLaunches: json,
+          listLaunches: json,
         });
       } catch (e) {
         console.log("Error! " + e);
@@ -96,19 +101,40 @@ class DetailsPage extends Component<MyProps, MyState> {
     return date.substring(0, 10).toString().split("-").reverse().join("-");
   };
 
+  handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ search: e.target.value }, () => {
+      // filtering
+      let regex = new RegExp(this.state.search, "i");
+      let results: any[] = this.state.listLaunches.filter(
+        (launch: any) => launch.details && launch.details.match(regex)
+      );
+      this.setState({ allLaunches: results });
+    });
+  };
+
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.list}>
-        {this.state.allLaunches.map((Launche: MyProps, index: number) => (
-          <div key={"launches" + index}>
-            <DetailsCard
-              ChangeFormateDate={this.ChangeFormateDate}
-              Launche={Launche}
-              key={Launche.id}
-            />
-          </div>
-        ))}
+      <div>
+        <div style={{ textAlign: "center" }}>
+          <TextField
+            label="Détail du lancement"
+            variant="outlined"
+            onChange={this.handleSearchChange}
+          />
+        </div>
+
+        <div className={classes.list}>
+          {this.state.allLaunches.map((Launche: MyProps, index: number) => (
+            <div key={"launches" + index}>
+              <DetailsCard
+                ChangeFormateDate={this.ChangeFormateDate}
+                Launche={Launche}
+                key={Launche.id}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
