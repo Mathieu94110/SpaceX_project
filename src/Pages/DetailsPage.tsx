@@ -1,14 +1,16 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { Component } from "react";
 import baseURL from "../Api/baseUrl";
 import {
   Theme,
   createStyles,
   withStyles,
   WithStyles,
-} from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-
+  TextField,
+  Button,
+  CircularProgress,
+} from "@material-ui/core";
 import DetailsCard from "../Components/DetailsPageModal/DetailsCard";
+import { Link } from "react-router-dom";
 
 //styles//
 const styles = (theme: Theme) =>
@@ -36,14 +38,48 @@ const styles = (theme: Theme) =>
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
     },
+    header: {
+      width: "100%",
+      height: "60px !important",
+      margin: "20px auto !important",
+      position: "relative",
+      display: "flex",
+      justifyContent: "center",
+    },
+    textfield: {
+      margin: "auto !important",
+    },
+    upcomingLaunchesPage: {
+      position: "absolute",
+      right: "10px",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: "12px",
+    },
+    spinnerWrapper: {
+      height: "100vh",
+      width: "100vw",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    spinner: {
+      display: "flex",
+      "& > * + *": {
+        marginLeft: theme.spacing(2),
+      },
+    },
   });
+//         //
 
+// props   //
 interface MyProps extends WithStyles<typeof styles> {
   id: number;
   name: string;
   date_utc: string;
-  //(`details` field) (`links` sub-fields)(`success` et `tbd` field)
-  //(`rocket` field (id))+ page qui affiche nom roquette (`name` field in rocket schema)
   links: {
     article: string;
     patch: {
@@ -52,15 +88,18 @@ interface MyProps extends WithStyles<typeof styles> {
     };
   };
   flight_number: string;
-  ChangeFormateDate: () => string;
   details: string;
+  ChangeFormateDate: () => string;
+
   test: () => any;
 }
 interface MyState {
   allLaunches: any[];
   listLaunches: any[];
   search: string;
+  loading: boolean;
 }
+//          //
 
 class DetailsPage extends Component<MyProps, MyState> {
   _isMounted = false;
@@ -70,27 +109,30 @@ class DetailsPage extends Component<MyProps, MyState> {
       listLaunches: [],
       allLaunches: [],
       search: "",
+      loading: true,
     };
   }
 
+  request = async () => {
+    const url: string = `${baseURL}/launches`;
+    const response = await fetch(url);
+
+    try {
+      const json = await response.json();
+      console.log("Reponse data ", json);
+      this.setState({
+        loading: false,
+        allLaunches: json,
+        listLaunches: json,
+      });
+    } catch (e) {
+      console.log("Error! " + e);
+    }
+  };
+
   componentDidMount() {
     this._isMounted = true;
-    const request = async () => {
-      const url: string = `${baseURL}/launches`;
-      const response = await fetch(url);
-
-      try {
-        const json = await response.json();
-        console.log("Reponse data ", json);
-        this.setState({
-          allLaunches: json,
-          listLaunches: json,
-        });
-      } catch (e) {
-        console.log("Error! " + e);
-      }
-    };
-    request();
+    this.request();
   }
 
   componentWillUnmount() {
@@ -114,29 +156,47 @@ class DetailsPage extends Component<MyProps, MyState> {
 
   render() {
     const { classes } = this.props;
-    return (
-      <div>
-        <div style={{ textAlign: "center" }}>
-          <TextField
-            label="Détail du lancement"
-            variant="outlined"
-            onChange={this.handleSearchChange}
-          />
+    if (this.state.loading) {
+      return (
+        <div className={classes.spinnerWrapper}>
+          <div className={classes.spinner}>
+            <CircularProgress />
+          </div>
         </div>
-
-        <div className={classes.list}>
-          {this.state.allLaunches.map((Launche: MyProps, index: number) => (
-            <div key={"launches" + index}>
-              <DetailsCard
-                ChangeFormateDate={this.ChangeFormateDate}
-                Launche={Launche}
-                key={Launche.id}
-              />
+      );
+    } else {
+      return (
+        <div>
+          <div className={classes.header}>
+            <TextField
+              label="Détail du lancement"
+              variant="outlined"
+              onChange={this.handleSearchChange}
+              className={classes.textfield}
+            />
+            <div className={classes.upcomingLaunchesPage}>
+              <Link to="/">
+                <Button variant="contained" color="primary">
+                  Prochains lancements
+                </Button>
+              </Link>
             </div>
-          ))}
+          </div>
+
+          <div className={classes.list}>
+            {this.state.allLaunches.map((Launche: MyProps, index: number) => (
+              <div key={"launches" + index}>
+                <DetailsCard
+                  ChangeFormateDate={this.ChangeFormateDate}
+                  Launche={Launche}
+                  key={Launche.id}
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 

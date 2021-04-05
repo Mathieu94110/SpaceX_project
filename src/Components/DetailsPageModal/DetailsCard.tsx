@@ -1,17 +1,22 @@
 import React, { useState } from "react";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import {
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Button,
+  Typography,
+  Fade,
+  Backdrop,
+  Modal,
+  Theme,
+  createStyles,
+  makeStyles,
+} from "@material-ui/core";
 import rocket_default_img from "../../images/rocket.png";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
 
+// styles //
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     wrapper: {
@@ -56,13 +61,17 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paper: {
       backgroundColor: theme.palette.background.paper,
-      border: "2px solid #000",
+      border: "2px solid #fff",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
+      fontWeight: 600,
+    },
+    detailsItems: {
+      color: "blue !important",
     },
   })
 );
-
+//     //
 const DetailsCard = (prop: any) => {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -158,10 +167,14 @@ const DetailsCard = (prop: any) => {
       >
         <Fade in={isOpen}>
           <div className={classes.paper}>
-            <p> Détails: {prop.Launche.details}</p>
+            <p>
+              {" "}
+              <span className={classes.detailsItems}>Détails :</span>{" "}
+              {prop.Launche.details}
+            </p>
             {prop.Launche.links.article !== null ? (
               <p>
-                Article :{" "}
+                <span className={classes.detailsItems}>Article :</span>{" "}
                 <a href={prop.Launche.links.article}>
                   {prop.Launche.links.article}
                 </a>
@@ -170,22 +183,25 @@ const DetailsCard = (prop: any) => {
               "Pas d'article disponible pour ce lancement"
             )}
             <p>
-              Youtube:{" "}
+              <span className={classes.detailsItems}>Youtube :</span>{" "}
               <a href={prop.Launche.links.webcast}>
                 {prop.Launche.links.webcast}
               </a>
             </p>
             <p>
-              Wikipédia :{" "}
+              <span className={classes.detailsItems}>Wikipédia :</span>{" "}
               <a href={prop.Launche.links.wikipedia}>
                 {prop.Launche.links.wikipedia}
               </a>
             </p>
             <p>
-              A définir :
+              <span className={classes.detailsItems}>A définir :</span>
               {prop.Launche.tbd === false ? " Non" : prop.Launche.tbd}
             </p>
-            <p>Réussite :{prop.Launche.success ? "Oui" : "Non"}</p>
+            <p>
+              <span className={classes.detailsItems}>Réussite :</span>
+              {prop.Launche.success ? "Oui" : "Non"}
+            </p>
           </div>
         </Fade>
       </Modal>

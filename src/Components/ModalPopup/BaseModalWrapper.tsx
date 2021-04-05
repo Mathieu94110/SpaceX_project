@@ -45,14 +45,17 @@ const BaseModalWrapper: React.FC<BaseModalWrapperProps> = ({
     <Modal onBackdropClick={onBackdropClick}>
       <div className={classes.modalContainer}>
         <h2 className={classes.modalContent}>
-          <span className={classes.styledBlue}>Nom:</span> {launch.name}
+          <span className={classes.styledBlue}>Nom :</span> {launch.name}
         </h2>
         <p>
-          <span className={classes.styledBlue}>Date de lancement:</span>{" "}
-          {launch.date_utc}
+          <span className={classes.styledBlue}>Fusée :</span> {launch.rocket}
         </p>
         <p>
-          <span className={classes.styledBlue}>Détails:</span>{" "}
+          <span className={classes.styledBlue}>Rampe de lancement :</span>{" "}
+          {launch.launchpad}
+        </p>
+        <p>
+          <span className={classes.styledBlue}>Détails :</span>{" "}
           {launch.details ? launch.details : "Aucun détail !"}
         </p>
       </div>
