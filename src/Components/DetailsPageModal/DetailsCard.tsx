@@ -147,10 +147,34 @@ const DetailsCard = (prop: any) => {
       >
         <Fade in={isOpen}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">Transition modal</h2>
-            <p id="transition-modal-description">
-              react-transition-group animates me.
+            <p> Détails: {prop.Launche.details}</p>
+            {prop.Launche.links.article !== null ? (
+              <p>
+                Article :{" "}
+                <a href={prop.Launche.links.article}>
+                  {prop.Launche.links.article}
+                </a>
+              </p>
+            ) : (
+              "Pas d'article disponible pour ce lancement"
+            )}
+            <p>
+              Youtube:{" "}
+              <a href={prop.Launche.links.webcast}>
+                {prop.Launche.links.webcast}
+              </a>
             </p>
+            <p>
+              Wikipédia :{" "}
+              <a href={prop.Launche.links.wikipedia}>
+                {prop.Launche.links.wikipedia}
+              </a>
+            </p>
+            <p>
+              A définir :
+              {prop.Launche.tbd === false ? " Non" : prop.Launche.tbd}
+            </p>
+            <p>Réussite :{prop.Launche.success ? "Oui" : "Non"}</p>
           </div>
         </Fade>
       </Modal>

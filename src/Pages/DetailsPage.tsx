@@ -75,10 +75,9 @@ class DetailsPage extends Component<MyProps, MyState> {
       const url: string = `${baseURL}/launches`;
       const response = await fetch(url);
 
-      console.log("Reponse data " + response);
       try {
         const json = await response.json();
-
+        console.log("Reponse data ", json);
         this.setState({
           allLaunches: json,
         });
