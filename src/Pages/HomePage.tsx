@@ -10,14 +10,26 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import rocket_default_img from "../images/rocket.png";
+import { Link } from "react-router-dom";
 
 //styles//
-const styles = () =>
+export const styles = () =>
   createStyles({
     wrapper: {
       width: "100%",
       height: "100%",
     },
+    header: {
+      width: "100%",
+      height: "60px !important",
+      margin: "20px auto !important",
+      position: "relative",
+    },
+    detailsPageLink: {
+      position: "absolute",
+      left: "10px",
+    },
+
     home_title: {
       textAlign: "center",
     },
@@ -68,6 +80,8 @@ interface MyProps extends WithStyles<typeof styles> {
   };
   flight_number: string;
   ChangeFormateDate: () => string;
+  details: string;
+  test: () => any;
 }
 interface MyState {
   futurLaunches: [];
@@ -75,7 +89,7 @@ interface MyState {
 //    //
 class HomePage extends Component<MyProps, MyState> {
   _isMounted = false;
-  constructor(props: any) {
+  constructor(props: MyProps) {
     super(props);
     this.state = {
       futurLaunches: [],
@@ -114,7 +128,16 @@ class HomePage extends Component<MyProps, MyState> {
     console.log(typeof this.state.futurLaunches);
     return (
       <div className={classes.wrapper}>
-        <h1 className={classes.home_title}>Prochains lancements</h1>
+        <div className={classes.header}>
+          <div className={classes.detailsPageLink}>
+            <Link to="/details">
+              <Button variant="contained" color="primary">
+                Page de détails
+              </Button>
+            </Link>
+          </div>{" "}
+          <h1 className={classes.home_title}>Prochains lancements</h1>
+        </div>
         <div className={classes.container}>
           <ul className={classes.list}>
             {this.state.futurLaunches.map((futurLaunche: MyProps) => (
