@@ -202,6 +202,14 @@ const DetailsCard = (prop: any) => {
               <span className={classes.detailsItems}>Réussite :</span>
               {prop.Launche.success ? "Oui" : "Non"}
             </p>
+            <p>
+              <a
+                href={"/rocket/" + prop.Launche.rocket}
+                className={classes.detailsItems}
+              >
+                Roquette : {prop.Launche.rocket}
+              </a>
+            </p>
           </div>
         </Fade>
       </Modal>
